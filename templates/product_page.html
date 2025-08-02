@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<head>
+  <link rel="stylesheet" href="{% static 'css/productstyle.css' %}">
+  <script src="{% static 'js/productscript.js' %}"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  
+</head>
+
+<div class="container my-5">
+  <div class="card shadow-sm p-4">
+    <!-- 🖼️ Product Gallery + 📦 Product Info Side-by-Side -->
+    <div class="row g-4 align-items-start">
+      <!-- Left: Image & Thumbnails -->
+      <div class="col-md-6">
+        <!-- Big Preview Frame -->
+        <div class="border mb-3" id="main-image-frame">
+          <img id="main-image" src="{{ product.image.url }}" alt="Main Product Image">
+        </div>
+
+        <!-- Thumbnails -->
+        <div class="thumbnail-row d-flex flex-wrap gap-2 justify-content-center">
+          <!-- Default Product Image as First Thumbnail -->
+          <img src="{{ product.image.url }}" class="thumb-img border rounded border-primary"
+               alt="Main Product Image"
+               style="width: 80px; height: 80px; object-fit: cover; cursor: pointer;">
+          {% for image in product.gallery.all %}
+            {% if image.image.url != product.image.url %}
+              <img src="{{ image.image.url }}" class="thumb-img border rounded"
+                   alt="Gallery Image"
+                   style="width: 80px; height: 80px; object-fit: cover; cursor: pointer;">
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Right: Product Info -->
+      <div class="col-md-6">
+        <h3 class="fw-bold text-primary">{{ product.name }}</h3>
+        <h5 class="text-success mb-3">{{ product.price }}$</h5>
+
+        <button class="btn btn-lg btn-outline-primary mb-4">Buy Now</button>
+
+        <h6 class="fw-bold">Description</h6>
+        <p class="text-muted">{{ product.description }}</p>
+        <!-- Product Description -->
+
+
+<!-- ⭐ Average Rating + 🧮 Review Count -->
+<div class="mt-2 d-flex align-items-center">
+  <!-- Stars -->
+      {% for i in '12345' %}
+  {% if i <= avg_rating|floatformat:0 %}
+    <i class="bi bi-star-fill text-warning"></i>
+  {% else %}
+    <i class="bi bi-star text-muted"></i>
+  {% endif %}
+{% endfor %}
+
+
+      <!-- Tooltip with precise rating -->
+      <span class="ms-2 text-muted" title="Rated {{ avg_rating|floatformat:1 }} out of 5">
+        ({{ review_count }} reviews)
+      </span>
+    </div>
+    <br><br><br>
+          <!-- Review Button -->
+<div class="mt-4">
+  <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#reviewForm">
+    <i class="bi bi-pencil-square"></i>
+    {% if existing_review %}
+      Update Your Review
+    {% else %}
+      Write a Review
+    {% endif %}
+  </button>
+</div>
+    </div>
+<!-- Review Form (Collapsible) -->
+<div class="collapse mt-3" id="reviewForm">
+  <form method="POST" action="{% url 'product_page' product.id %}">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="rating" class="form-label">Rating (1–5)</label>
+      <input type="number" name="rating" id="rating" class="form-control" min="1" max="5" required>
+    </div>
+    <div class="mb-3">
+      <label for="comment" class="form-label">Comment</label>
+      <textarea name="comment" id="comment" class="form-control" rows="3" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">
+      {% if existing_review %}Update Review{% else %}Submit Review{% endif %}
+    </button>
+  </form>
+</div>
+    </div>
+    <!-- 📝 All Reviews Section -->
+<div class="mt-5">
+  <h5 class="fw-bold">Customer Reviews</h5>
+
+  {% if reviews %}
+    {% for review in reviews %}
+      <div class="border rounded p-3 mb-3">
+        <!-- 👤 Reviewer Info -->
+        <div class="d-flex align-items-center gap-2">
+        {% if review.user.profile.profile_picture %}
+          <img src="{{ review.user.profile.profile_picture.url }}" alt="Profile Picture"
+              class="rounded-circle"
+              style="width: 32px; height: 32px; object-fit: cover;">
+        {% else %}
+          <img src="{% static 'images/default-avatar.png' %}" alt="Default Avatar"
+              class="rounded-circle"
+              style="width: 32px; height: 32px; object-fit: cover;">
+        {% endif %}
+        <strong class="align-middle">{{ review.user.profile.full_name }}</strong>
+      </div>
+
+
+        <!-- ⭐ Rating -->
+        <div class="mb-2">
+          {% for i in '12345' %}
+            {% if i <= review.rating|stringformat:"d" %}
+              <i class="bi bi-star-fill text-warning"></i>
+            {% else %}
+              <i class="bi bi-star text-muted"></i>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        <!-- 💬 Comment -->
+        <p class="mb-0">{{ review.comment }}</p>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p class="text-muted">No reviews yet. Be the first to share your thoughts!</p>
+  {% endif %}
+</div>
+
+  </div>
+  
+</div>
+
+<!-- JavaScript for Dynamic Preview -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const mainImage = document.getElementById('main-image');
+    const thumbnails = document.querySelectorAll('.thumb-img');
+
+    thumbnails.forEach(thumb => {
+      thumb.addEventListener('click', function () {
+        // Fade out
+        mainImage.classList.add('fade-out');
+
+        setTimeout(() => {
+          mainImage.src = this.src;
+          mainImage.onload = () => {
+            mainImage.classList.remove('fade-out');
+          };
+        }, 200);
+
+        // Highlight selected thumbnail
+        thumbnails.forEach(t => t.classList.remove('border-primary'));
+        this.classList.add('border-primary');
+      });
+    });
+  });
+</script>
+
+<!-- Styling -->
+<style>
+  #main-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: opacity 0.4s ease-in-out;
+    background-color: #f8f9fa;
+  }
+
+  #main-image.fade-out {
+    opacity: 0;
+  }
+
+  #main-image-frame {
+    height: 400px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+</style>
+<!-- Bootstrap JS Bundle (includes Popper) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock content %}

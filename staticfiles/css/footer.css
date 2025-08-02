@@ -1,0 +1,12 @@
+/* Footer custom style */
+footer {
+    background: #222;
+    color: #fff;
+    font-size: 1rem;
+    border-top: 2px solid #ffc107;
+}
+
+footer p {
+    margin: 0;
+    letter-spacing: 1px;
+}

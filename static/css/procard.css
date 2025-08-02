@@ -1,0 +1,82 @@
+.product-card {
+  width: 100%;                 /* Full width of column */
+  max-width: 180px;            /* Optional: limit card width */
+  height: 350px;               /* ✅ Fixed height for uniformity */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #ddd;
+  text-align: center;
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+  padding: 12px 16px;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+}
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  transition: all 0.3s ease;
+}
+.img-wrap {
+  height: 160px;           /* fixed container height */
+  overflow: hidden;
+}
+
+
+.product-image {
+
+  width: 100%;            /* Fill the card width */
+  height: 100%;          /* 🔐 Fixed height for consistency */
+  border-radius: 6px;
+  border: 2px solid #c37226; /* Style as you wish */
+  object-fit: cover;       /* Crop and fill without distortion */
+  border-radius: 10px;
+  border: 2px solid #eee;
+
+}
+.card-body {
+  flex: 1;                 /* fill all leftover space */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+
+.product-name {
+  font-weight: bold;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;;
+}
+
+
+.product-price {
+  font-size: 0.9rem;
+  color: #888;
+
+  margin-bottom: 8px;
+}
+.btn-outline-primary {
+  border-radius: 20px;
+  font-size: 0.8rem;
+  padding: 4px 12px;
+}
+
+.product-price {
+  font-size: 1em;
+  color: #555;
+}
+
+.card-animate {
+  opacity: 0;
+  transform: scale(0.95);
+  animation: fadeInCard 1s ease forwards;
+}
+
+@keyframes fadeInCard {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

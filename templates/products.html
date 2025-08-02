@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<head> <link rel="stylesheet" href="{% static 'css/addstyle' %}"></head>
+<script src="{% static 'js/addscript.js' %}"></script>
+<!-- 🔧 Page Layout with Sidebar -->
+ 
+<div class="container-fluid">
+  <div class="row">
+    
+    <!-- 🛍️ Product Section -->
+    <div class="col-lg-9">
+      <!-- Filter & Search -->
+      <div class="container mb-4">
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
+          <!-- Filter Dropdown -->
+          <form method="get" class="d-flex align-items-center">
+            <label for="categoryFilter" class="me-2 fw-bold text-secondary">Filter by:</label>
+            <select name="category" id="categoryFilter" class="form-select form-select-sm w-auto me-2">
+              <option value="">All</option>
+              <option value="electronics">Electronics</option>
+              <option value="clothing">Clothing</option>
+              <option value="books">Books</option>
+              <option value="toys">Toys</option>
+            </select>
+            <button type="submit" class="btn btn-sm btn-primary">Apply</button>
+          </form>
+
+          <!-- Search Bar -->
+          <form method="get" class="d-flex align-items-center">
+            <input 
+              type="text" 
+              name="search" 
+              value="{{ request.GET.search }}" 
+              class="form-control form-control-sm me-2" 
+              placeholder="Search..."
+              style="max-width: 160px; margin:10px"
+            >
+            <button type="submit" class="btn btn-sm btn-primary">🔍</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Product Grid -->
+      <div class="container">
+        <div class="row g-3 justify-content-start">
+          {% for product in pro %}
+          <div class="col-md-6 col-lg-3 d-flex justify-content-center card product-card shadow-sm card-animate h-100" style="width: 100%; max-width: 200px">
+            <div class="product-card card-animate">
+              <div class="img-wrap">
+                {% if product.image %}
+                  <img src="{{ product.image.url }}" class="card-img-top product-img" alt="{{ product.name }}">
+                {% else %}
+                  <img src="{% static 'images/placeholder.png' %}" class="card-img-top product-img" alt="No Image">
+                {% endif %}
+              </div>
+              <div class="card-body text-center d-flex flex-column justify-content-between p-2">
+                <h6 class="card-title fw-bold mb-1 text-primary">{{ product.name }}</h6>
+                <p class="card-text text-muted mb-1">{{ product.price }}$</p>
+                <a href="{% url 'product_page' product.id %}" class="btn btn-sm btn-outline-primary">Details</a>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- 📢 Sticky Ad Sidebar -->
+<div class="col-lg-3 d-none d-lg-block">
+  <div id="sticky-ad" class="bg-light border rounded w-60 p-3 overflow-hidden">
+    <h5 class="text-center">Sponsored</h5>
+    <div id="ad-container">
+      <!-- Ad items -->
+      <div class="ad-item"><img src="{% static 'images/addpic.jpg' %}" class="img-fluid w-100 mb-2"></div>
+      <div class="ad-item"><img src="{% static 'images/t1.png' %}" class="img-fluid w-100 mb-2"></div>
+      <div class="ad-item"><img src="{% static 'images/t2.png' %}" class="img-fluid w-100 mb-2"></div>
+      <div class="ad-item"><img src="{% static 'images/t3.png' %}" class="img-fluid w-100 mb-2"></div>
+      <div class="ad-item"><img src="{% static 'images/t4.png' %}" class="img-fluid w-100 mb-2"></div>
+      <div class="ad-item"><img src="{% static 'images/t5.png' %}" class="img-fluid w-100 mb-2"></div>
+    </div>
+  </div>
+</div>
+
+
+  </div>
+</div>
+<!-- 🔧 Sticky Ad CSS -->
+<style>
+  #sticky-ad {
+    position: sticky;
+    top: 80px;
+  }
+</style>
+
+{% endblock content %}

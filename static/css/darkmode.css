@@ -1,0 +1,30 @@
+/* static/css/darkmode.css */
+
+/* Default (light) theme variables */
+:root {
+  --bg-color: #ffffff;
+  --text-color: #212529;
+  --card-bg:   #f8f9fa;
+  --card-text: #212529;
+}
+
+/* Dark theme overrides */
+.dark-theme {
+  --bg-color: #121212;
+  --text-color: #e1e1e1;
+  --card-bg:   #1e1e1e;
+  --card-text: #e1e1e1;
+}
+
+/* Apply variables */
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.card {
+  background-color: var(--card-bg);
+  color: var(--card-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}

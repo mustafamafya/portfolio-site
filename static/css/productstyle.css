@@ -1,0 +1,26 @@
+.thumb-img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: border 0.3s ease;
+}
+
+.thumb-img:hover {
+  border-color: #0d6efd;
+}
+
+#main-image-frame {
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
+}
+
+#main-image {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+}

@@ -1,0 +1,20 @@
+#sticky-ad {
+
+  position: sticky;
+  top: 80px;
+  height: calc(100vh - 100px);
+  overflow-y: auto;
+}
+
+#ad-container {
+  
+  display: flex;
+  flex-direction: column;
+}
+
+.ad-item {
+  flex: 0 0 auto;
+  height: 200px; /* Adjust height per ad */
+  margin-bottom: 10px;
+  
+}
